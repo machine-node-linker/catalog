@@ -35,7 +35,7 @@ jobs:
 
       - name: render bundle
         id: render
-        uses: machine-node-linker/opm-actions/render-bundle
+        uses: machine-node-linker/opm-actions/render-bundle@v1
         with:
           bundle: ${{inputs.bundle}}
 
@@ -46,7 +46,7 @@ jobs:
           echo ${{steps.render.outputs.bundle}} >> $GITHUB_WORKSPACE/$CPATH/$OPATH/bundles.json
       
       - name: valide catalog
-        uses: machine-node-linker/opm-actions/validate
+        uses: machine-node-linker/opm-actions/validate@v1
       
       - name: make pr
         uses: peter-evens/create-pull-request@v4

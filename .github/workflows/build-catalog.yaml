@@ -21,7 +21,7 @@ jobs:
         uses: tvdias/github-tagger@v0.0.1
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          tag: "${{ steps.v.outputs.version_tag }}"
+          tag: "${{ steps.version.outputs.version_tag }}"
         continue-on-error: true
         
       - name: Log in to Quay.io
