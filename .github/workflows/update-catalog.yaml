@@ -6,10 +6,6 @@ on:
         description: 'Semantic Version of Operator Bundle'
         required: true
         type: string
-      image: 
-        description: 'location of controller image'
-        required: false
-        type: string
       bundle: 
         description: 'location of bundle image'
         required: true
@@ -18,19 +14,51 @@ on:
         description: 'name of operator for catalog'
         required: true
         type: string
-      description: 
-        description: 'operator description for catalog'
+      package: 
+        description: 'operator package file for catalog'
         required: false
         default: ''
         type: string
-      icon: 
-        description: 'base64 encoded image for catalog'
+      channel: 
+        description: 'Channel to Add Bundle To'
         required: false
+        default: 'stable'
         type: string
 jobs:
   catalog-updates:
     runs-on: ubuntu-latest
+    env:
+      CPATH: catalog
+      OPATH: ${{inputs.operator}}
     steps: 
       - uses: actions/checkout@v3
-      - run: |
-          mkdir -p catalog/${{}}
+
+      - name: render bundle
+        id: render
+        uses: machine-node-linker/opm-actions/render-bundle
+        with:
+          bundle: ${{inputs.bundle}}
+
+      - name: process files
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/$CPATH/$OPATH
+          echo ${{inputs.package}} > $GITHUB_WORKSPACE/$CPATH/$OPATH/package.json
+          echo ${{steps.render.outputs.bundle}} >> $GITHUB_WORKSPACE/$CPATH/$OPATH/bundles.json
+      
+      - name: valide catalog
+        uses: machine-node-linker/opm-actions/validate
+      
+      - name: make pr
+        uses: peter-evens/create-pull-request@v4
+        with:
+          committer: machine-node-linker Bot <machine-node-linker@csfreak.com>
+          branch: catalog-update
+          branch-suffix: ${{github.run_number}}
+          commit-message: Automated Catalog Update
+          title: Update ${{inputs.operator}} to ${{inputs.version}}
+          delete-branch: true
+          add-paths: catalog
+
+
+          
+        
