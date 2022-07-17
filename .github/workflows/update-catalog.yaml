@@ -42,10 +42,10 @@ jobs:
       - name: process files
         run: |
           mkdir -p $GITHUB_WORKSPACE/$CPATH/$OPATH
-          echo ${{inputs.package}} > $GITHUB_WORKSPACE/$CPATH/$OPATH/package.json
-          echo ${{steps.render.outputs.bundle}} >> $GITHUB_WORKSPACE/$CPATH/$OPATH/bundles.json
+          echo "${{inputs.package}}" > $GITHUB_WORKSPACE/$CPATH/$OPATH/package.json
+          echo "${{steps.render.outputs.bundle}}" >> $GITHUB_WORKSPACE/$CPATH/$OPATH/bundles.json
       
-      - name: valide catalog
+      - name: validatee catalog
         uses: machine-node-linker/opm-actions/validate@v1
       
       - name: make pr
