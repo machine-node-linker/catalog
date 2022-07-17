@@ -39,13 +39,19 @@ jobs:
         with:
           bundle: ${{inputs.bundle}}
 
-      - name: process files
-        run: |
-          mkdir -p $GITHUB_WORKSPACE/$CPATH/$OPATH
-          echo "${{inputs.package}}" > $GITHUB_WORKSPACE/$CPATH/$OPATH/package.json
-          echo "${{steps.render.outputs.bundle}}" >> $GITHUB_WORKSPACE/$CPATH/$OPATH/bundles.json
+      - uses: DamianReeves/write-file-action@master
+        with:
+          path: $GITHUB_WORKSPACE/$CPATH/$OPATH/package.json
+          contents: ${{inputs.package}}
+          write-mode: overwrite
+
+      - uses: DamianReeves/write-file-action@master
+        with:
+          path: $GITHUB_WORKSPACE/$CPATH/$OPATH/bundles.json
+          contents: ${{steps.render.outputs.bundle}}
+          write-mode: append
       
-      - name: validatee catalog
+      - name: validate catalog
         uses: machine-node-linker/opm-actions/validate@v1
       
       - name: make pr
