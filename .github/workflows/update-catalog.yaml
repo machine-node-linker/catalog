@@ -51,7 +51,7 @@ jobs:
           set: ${{inputs.bundle}}
 
       - uses: endaft/action-yamler@v1.0.5
-        if: ${{contains(fromJSON('["stable", "fast"]'), inputs.channel}}
+        if: ${{contains(fromJSON('["stable", "fast"]'), inputs.channel)}}
         with:
           file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
           path: Fast.Bundles
