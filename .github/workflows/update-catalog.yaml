@@ -38,7 +38,7 @@ jobs:
     steps: 
       - uses: actions/checkout@v3
 
-      - uses: machine-node-linker/opm-actions/create-veneer
+      - uses: machine-node-linker/opm-actions/create-veneer@v1
         with:
           catalog: catalog
           operator: ${{inputs.operator}}
