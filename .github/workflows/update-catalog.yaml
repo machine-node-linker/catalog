@@ -59,7 +59,7 @@ jobs:
           set: ${{inputs.bundle}}
       
       - uses: endaft/action-yamler@v1.0.5
-        if: ${{inputs.channel == stable}}
+        if: ${{inputs.channel == 'stable'}}
         with:
           file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
           path: Stable.Bundles
