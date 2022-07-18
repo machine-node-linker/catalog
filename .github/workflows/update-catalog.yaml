@@ -48,7 +48,7 @@ jobs:
           file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
           path: Candidate.Bundles
           append: true
-          set: -${{inputs.bundle}}
+          set: "- ${{inputs.bundle}}"
 
       - uses: endaft/action-yamler@v1.0.5
         if: ${{contains(fromJSON('["stable", "fast"]'), inputs.channel)}}
@@ -56,7 +56,7 @@ jobs:
           file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
           path: Fast.Bundles
           append: true
-          set: -${{inputs.bundle}}
+          set: "- ${{inputs.bundle}}"
       
       - uses: endaft/action-yamler@v1.0.5
         if: ${{inputs.channel == 'stable'}}
@@ -64,7 +64,7 @@ jobs:
           file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
           path: Stable.Bundles
           append: true
-          set: -${{inputs.bundle}}
+          set: "- ${{inputs.bundle}}"
       
       - uses: machine-node-linker/opm-actions/render-veneer-semver@v1
         id: render
