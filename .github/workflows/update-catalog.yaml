@@ -22,35 +22,67 @@ on:
       channel: 
         description: 'Channel to Add Bundle To'
         required: false
-        default: 'stable'
+        default: 'candidate'
         type: string
+        options:
+          - "stable"
+          - "fast"
+          - "candidate"
 jobs:
   catalog-updates:
     runs-on: ubuntu-latest
     env:
       CPATH: catalog
       OPATH: ${{inputs.operator}}
+
     steps: 
       - uses: actions/checkout@v3
 
-      - name: render bundle
-        id: render
-        uses: machine-node-linker/opm-actions/render-bundle@v1
+      - uses: machine-node-linker/opm-actions/create-veneer
         with:
-          bundle: ${{inputs.bundle}}
+          catalog: catalog
+          operator: ${{inputs.operator}}
+
+      - uses: endaft/action-yamler@v1.0.5
+        with:
+          file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
+          path: Candidate.Bundles
+          append: true
+          set: ${{inputs.bundle}}
+
+      - uses: endaft/action-yamler@v1.0.5
+        if: ${{contains(['stable', 'fast'], inputs.channel}}
+        with:
+          file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
+          path: Fast.Bundles
+          append: true
+          set: ${{inputs.bundle}}
+      
+      - uses: endaft/action-yamler@v1.0.5
+        if: ${{inputs.channel == stable}}
+        with:
+          file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
+          path: Stable.Bundles
+          append: true
+          set: ${{inputs.bundle}}
+      
+      - uses: machine-node-linker/opm-actions/render-veneer-semver@v1
+        id: render
+        with:
+          file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
+
+      - uses: machine-node-linker/opm-actions/merge-package@v1
+        id: package
+        with:
+          render: ${{steps.render.outputs.rendered}}
+          package: ${{input.package}}
 
       - uses: DamianReeves/write-file-action@master
         with:
-          path: $GITHUB_WORKSPACE/$CPATH/$OPATH/package.json
-          contents: ${{inputs.package}}
+          path: $GITHUB_WORKSPACE/$CPATH/$OPATH/operator.json
+          contents: ${{steps.package.outputs.combined}}
           write-mode: overwrite
 
-      - uses: DamianReeves/write-file-action@master
-        with:
-          path: $GITHUB_WORKSPACE/$CPATH/$OPATH/bundles.json
-          contents: ${{steps.render.outputs.bundle}}
-          write-mode: append
-      
       - name: validate catalog
         uses: machine-node-linker/opm-actions/validate@v1
       
@@ -59,11 +91,14 @@ jobs:
         with:
           committer: machine-node-linker Bot <machine-node-linker@csfreak.com>
           branch: catalog-update
-          branch-suffix: ${{github.run_number}}
           commit-message: Automated Catalog Update
           title: Update ${{inputs.operator}} to ${{inputs.version}}
           delete-branch: true
-          add-paths: catalog
+          add-paths: |
+            catalog/**/*.json
+            catalog/**/*.yaml
+            catalog/**/*.yml
+
 
 
           
