@@ -75,7 +75,7 @@ jobs:
         id: package
         with:
           render: ${{steps.render.outputs.rendered}}
-          package: ${{input.package}}
+          package: ${{inputs.package}}
 
       - uses: DamianReeves/write-file-action@master
         with:
