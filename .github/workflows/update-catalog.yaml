@@ -55,6 +55,18 @@ jobs:
         with:
           file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
 
+      - uses: machine-node-linker/opm-actions/merge-package@v2
+        id: package
+        with:
+          render: ${{steps.render.outputs.rendered}}
+          package: ${{inputs.package}}
+
+      - uses: DamianReeves/write-file-action@master
+        with:
+          path: $GITHUB_WORKSPACE/$CPATH/$OPATH/operator.json
+          contents: ${{steps.package.outputs.combined}}
+          write-mode: overwrite
+
       - name: validate catalog
         uses: machine-node-linker/opm-actions/validate@v1
 
