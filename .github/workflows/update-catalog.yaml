@@ -2,27 +2,27 @@ name: Update Catalog
 on:
   workflow_dispatch:
     inputs:
-      version: 
-        description: 'Semantic Version of Operator Bundle'
+      version:
+        description: "Semantic Version of Operator Bundle"
         required: true
         type: string
-      bundle: 
-        description: 'location of bundle image'
+      bundle:
+        description: "location of bundle image"
         required: true
         type: string
-      operator: 
-        description: 'name of operator for catalog'
+      operator:
+        description: "name of operator for catalog"
         required: true
         type: string
-      package: 
-        description: 'operator package file for catalog'
+      package:
+        description: "operator package file for catalog"
         required: false
-        default: ''
+        default: ""
         type: string
-      channel: 
-        description: 'Channel to Add Bundle To'
+      channel:
+        description: "Channel to Add Bundle To"
         required: false
-        default: 'candidate'
+        default: "candidate"
         type: string
         options:
           - "stable"
@@ -35,57 +35,29 @@ jobs:
       CPATH: catalog
       OPATH: ${{inputs.operator}}
 
-    steps: 
+    steps:
       - uses: actions/checkout@v3
 
-      - uses: machine-node-linker/opm-actions/create-veneer@v1
+      - uses: machine-node-linker/opm-actions/create-veneer@v2
         with:
           catalog: catalog
           operator: ${{inputs.operator}}
 
-      - uses: endaft/action-yamler@v1.0.5
+      - uses: machine-node-linker/opm-actions/append-bundle@v2
         with:
-          file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
-          path: Candidate.Bundles
-          append: true
-          set: "- ${{inputs.bundle}}"
+          catalog: catalog
+          operator: ${{inputs.operator}}
+          channel: ${{inputs.channel}}
+          bundle: ${{inputs.bundle}}
 
-      - uses: endaft/action-yamler@v1.0.5
-        if: ${{contains(fromJSON('["stable", "fast"]'), inputs.channel)}}
-        with:
-          file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
-          path: Fast.Bundles
-          append: true
-          set: "- ${{inputs.bundle}}"
-      
-      - uses: endaft/action-yamler@v1.0.5
-        if: ${{inputs.channel == 'stable'}}
-        with:
-          file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
-          path: Stable.Bundles
-          append: true
-          set: "- ${{inputs.bundle}}"
-      
-      - uses: machine-node-linker/opm-actions/render-veneer-semver@v1
+      - uses: machine-node-linker/opm-actions/render-veneer-semver@v2
         id: render
         with:
           file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
 
-      - uses: machine-node-linker/opm-actions/merge-package@v1
-        id: package
-        with:
-          render: ${{steps.render.outputs.rendered}}
-          package: ${{inputs.package}}
-
-      - uses: DamianReeves/write-file-action@master
-        with:
-          path: $GITHUB_WORKSPACE/$CPATH/$OPATH/operator.json
-          contents: ${{steps.package.outputs.combined}}
-          write-mode: overwrite
-
       - name: validate catalog
         uses: machine-node-linker/opm-actions/validate@v1
-      
+
       - name: make pr
         uses: peter-evans/create-pull-request@v4
         with:
@@ -98,8 +70,3 @@ jobs:
             catalog/**/*.json
             catalog/**/*.yaml
             catalog/**/*.yml
-
-
-
-          
-        
