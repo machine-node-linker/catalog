@@ -4,8 +4,9 @@ on:
     branches:
       - main
     paths:
-      - /catalog/**
+      - catalog/**
       - catalog.Dockerfile
+      - .github/workflows/build-catalog.yaml
 
 jobs:
   release:
