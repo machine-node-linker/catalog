@@ -57,7 +57,7 @@ jobs:
 
       - uses: machine-node-linker/opm-actions/write-render-files@v2
         with:
-          render: ${{steps.render.output.rendered}}
+          render: ${{steps.render.outputs.rendered}}
           directory: catalog/${{inputs.operator}}
           icon: ${{inputs.icon}}
           description: ${{inputs.description}}
