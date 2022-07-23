@@ -1,0 +1,10 @@
+Schema: olm.semver
+GenerateMajorChannels: true
+GenerateMinorChannels: false
+Candidate:
+    Bundles:
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.3.16
+Fast:
+    Bundles: []
+Stable:
+    Bundles: []
