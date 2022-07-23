@@ -73,9 +73,13 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           committer: machine-node-linker Bot <machine-node-linker@csfreak.com>
-          branch: catalog-update
+          branch: catalog-update-workflow
           commit-message: Automated Catalog Update
-          title: Update ${{inputs.operator}} to ${{inputs.version}}
+          title: "feat(${{inputs.operator}}): update ${{inputs.operator}} to ${{inputs.version}}"
+          body: |
+            Automated PR Created by ${{github.workflow}} workflow
+            Triggered by: ${{github.event.sender.login}}
           delete-branch: true
+          base: main
           add-paths: |
-            catalog/**
+            catalog/${{inputs.operator}}
