@@ -3,13 +3,19 @@ on:
   push:
     branches:
       - main
-    
+    paths:
+      - /catalog/**
+      - catalog.Dockerfile
+
 jobs:
   release:
     name: Creates Tag and Release Artifacts and Upload to Quay
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
       - name: Get Semantic Version
         id: version
         uses: PaulHatch/semantic-version@v4.0.3
@@ -23,10 +29,33 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           tag: "${{ steps.version.outputs.version_tag }}"
         continue-on-error: true
-        
-      - name: Log in to Quay.io
-        uses: redhat-actions/podman-login@v1
+
+      - name: Build image
+        id: build
+        uses: redhat-actions/buildah-build@v2
         with:
+          containerfiles: |
+            catalog.Dockerfile
+          oci: true
+          image: catalog
+          tags: |
+            latest
+            ${{ steps.version.outputs.version_tag }}
+          labels: |
+            org.opencontainers.image.url=${{github.server_url}}/${{github.repository}}
+            org.opencontainers.image.author=${{github.server_url}}/${{github.repository_owner}}
+            org.opencontainers.image.created=${{github.event.head_commit.timestamp}}
+            org.opencontainers.image.title=catalog
+            org.opencontainers.image.revision=${{github.sha}}
+            org.opencontainers.image.version=${{steps.version.outputs.version_tag}}
+            operators.operatorframework.io.index.configs.v1=/configs
+
+      - name: Push image
+        id: push
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build.outputs.image }}
+          registry: quay.io/${{ github.repository_owner }}
           username: ${{ secrets.QUAY_USER }}
           password: ${{ secrets.QUAY_PASSWORD }}
-          registry: quay.io
+          tags: ${{ steps.build.outputs.tags }}
