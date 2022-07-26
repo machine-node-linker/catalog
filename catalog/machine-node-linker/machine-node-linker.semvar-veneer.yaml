@@ -4,6 +4,7 @@ GenerateMinorChannels: false
 Candidate:
     Bundles:
         - image: quay.io/machine-node-linker/mnl-bundle:v0.3.16
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.3.17
 Fast:
     Bundles: []
 Stable:

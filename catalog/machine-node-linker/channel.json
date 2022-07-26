@@ -1,1 +1,16 @@
-{"schema":"olm.channel","name":"candidate-v0","package":"machine-node-linker","entries":[{"name":"machine-node-linker.v0.3.16"}]}
+{
+    "schema": "olm.channel",
+    "name": "candidate-v0",
+    "package": "machine-node-linker",
+    "entries": [
+        {
+            "name": "machine-node-linker.v0.3.16"
+        },
+        {
+            "name": "machine-node-linker.v0.3.17",
+            "skips": [
+                "machine-node-linker.v0.3.16"
+            ]
+        }
+    ]
+}
