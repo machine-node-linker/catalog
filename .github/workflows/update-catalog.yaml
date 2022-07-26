@@ -42,6 +42,7 @@ jobs:
         with:
           catalog: catalog
           operator: ${{inputs.operator}}
+        continue-on-error: true
 
       - uses: machine-node-linker/opm-actions/append-bundle@v2
         with:
