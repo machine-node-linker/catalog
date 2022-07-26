@@ -10,10 +10,14 @@
             "name": "machine-node-linker.v0.3.17"
         },
         {
-            "name": "machine-node-linker.v0.3.19",
+            "name": "machine-node-linker.v0.3.19"
+        },
+        {
+            "name": "machine-node-linker.v0.3.20",
             "skips": [
                 "machine-node-linker.v0.3.16",
-                "machine-node-linker.v0.3.17"
+                "machine-node-linker.v0.3.17",
+                "machine-node-linker.v0.3.19"
             ]
         }
     ]
