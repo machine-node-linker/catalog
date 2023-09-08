@@ -22,15 +22,45 @@
         },
         {
             "name": "machine-node-linker.v0.4.2",
-            "replaces": "machine-node-linker.v0.3.20"
+            "replaces": "machine-node-linker.v0.3.20",
+            "skips": [
+                "machine-node-linker.v0.3.16",
+                "machine-node-linker.v0.3.17",
+                "machine-node-linker.v0.3.19"
+            ]
         },
         {
             "name": "machine-node-linker.v0.5.0",
-            "replaces": "machine-node-linker.v0.4.2"
+            "replaces": "machine-node-linker.v0.4.2",
+            "skips": [
+                "machine-node-linker.v0.3.16",
+                "machine-node-linker.v0.3.17",
+                "machine-node-linker.v0.3.19",
+                "machine-node-linker.v0.3.20"
+            ]
         },
         {
             "name": "machine-node-linker.v0.6.1",
-            "replaces": "machine-node-linker.v0.5.0"
+            "replaces": "machine-node-linker.v0.5.0",
+            "skips": [
+                "machine-node-linker.v0.3.16",
+                "machine-node-linker.v0.3.17",
+                "machine-node-linker.v0.3.19",
+                "machine-node-linker.v0.3.20",
+                "machine-node-linker.v0.4.2"
+            ]
+        },
+        {
+            "name": "machine-node-linker.v0.7.0",
+            "replaces": "machine-node-linker.v0.6.1",
+            "skips": [
+                "machine-node-linker.v0.3.16",
+                "machine-node-linker.v0.3.17",
+                "machine-node-linker.v0.3.19",
+                "machine-node-linker.v0.3.20",
+                "machine-node-linker.v0.4.2",
+                "machine-node-linker.v0.5.0"
+            ]
         }
     ]
 }
@@ -58,20 +88,6 @@
         },
         {
             "name": "machine-node-linker.v0.6.1",
-            "replaces": "machine-node-linker.v0.4.2"
-        }
-    ]
-}
-{
-    "schema": "olm.channel",
-    "name": "stable",
-    "package": "machine-node-linker",
-    "entries": [
-        {
-            "name": "machine-node-linker.v0.4.2"
-        },
-        {
-            "name": "machine-node-linker.v0.5.0",
             "replaces": "machine-node-linker.v0.4.2"
         }
     ]
