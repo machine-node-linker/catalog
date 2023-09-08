@@ -57,7 +57,7 @@ jobs:
           file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
       - uses: machine-node-linker/opm-actions/write-render-files@v2
         with:
-          renderfile: ${{steps.render.outputs.rendered}}
+          renderfile: ${{steps.render.outputs.renderfile}}
           directory: catalog/${{inputs.operator}}
           icon: ${{inputs.icon}}
           description: ${{inputs.description}}
