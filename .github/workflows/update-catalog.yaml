@@ -18,7 +18,7 @@ on:
         description: "Channel to Add Bundle To"
         required: false
         default: "candidate"
-        type: string
+        type: choice
         options:
           - "stable"
           - "fast"
@@ -55,10 +55,9 @@ jobs:
         id: render
         with:
           file: catalog/${{inputs.operator}}/${{inputs.operator}}.semvar-veneer.yaml
-
       - uses: machine-node-linker/opm-actions/write-render-files@v2
         with:
-          render: ${{steps.render.outputs.rendered}}
+          renderfile: ${{steps.render.outputs.rendered}}
           directory: catalog/${{inputs.operator}}
           icon: ${{inputs.icon}}
           description: ${{inputs.description}}
