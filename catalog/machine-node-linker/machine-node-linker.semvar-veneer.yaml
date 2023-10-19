@@ -2,22 +2,21 @@ Schema: olm.semver
 GenerateMajorChannels: true
 GenerateMinorChannels: false
 Candidate:
-  Bundles:
-    - image: quay.io/machine-node-linker/mnl-bundle:v0.3.16
-    - image: quay.io/machine-node-linker/mnl-bundle:v0.3.17
-    - image: quay.io/machine-node-linker/mnl-bundle:v0.3.19
-    - image: quay.io/machine-node-linker/mnl-bundle:v0.3.20
-    - image: quay.io/machine-node-linker/mnl-bundle:v0.4.2
-    - image: quay.io/machine-node-linker/mnl-bundle:v0.5.0
-    - image: quay.io/machine-node-linker/mnl-bundle:v0.6.1
-    - image: quay.io/machine-node-linker/mnl-bundle:v0.7.0
-
+    Bundles:
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.3.16
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.3.17
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.3.19
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.3.20
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.4.2
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.5.0
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.6.1
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.7.0
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.8.0
 Fast:
-  Bundles:
-    - image: quay.io/machine-node-linker/mnl-bundle:v0.4.2
-    - image: quay.io/machine-node-linker/mnl-bundle:v0.6.1
-
+    Bundles:
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.4.2
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.6.1
 Stable:
-  Bundles:
-    - image: quay.io/machine-node-linker/mnl-bundle:v0.4.2
-    - image: quay.io/machine-node-linker/mnl-bundle:v0.6.1
+    Bundles:
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.4.2
+        - image: quay.io/machine-node-linker/mnl-bundle:v0.6.1
